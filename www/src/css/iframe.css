@@ -1,0 +1,65 @@
+html {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  position: relative;
+  list-style: none; }
+
+form {
+  width: 500px;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -150px 0 0 -250px; }
+  form div {
+    width: 230px;
+    height: 30px;
+    display: inline-block;
+    margin: 10px 0px 0px 55px;
+    position: relative; }
+    form div input {
+      outline: none;
+      float: right;
+      height: 25px;
+      width: 180px;
+      padding: 3px;
+      position: absolute;
+      border: none;
+      border-bottom: 1px solid #ccc; }
+    form div:first-child {
+      margin-top: 50px; }
+    form div label {
+      font-size: 20px;
+      color: dimgray; }
+    form div label.error {
+      font-size: #000;
+      font-size: 15px; }
+    form div span {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      right: 0;
+      bottom: 0; }
+    form div .user_icon {
+      background: url("../images/(user)_SFont.CN.svg"); }
+    form div .stu_icon {
+      background: url("../images/(student)_SFont.CN.svg"); }
+    form div .pass_icon {
+      background: url("../images/(password)_SFont.CN.svg"); }
+  form #log {
+    margin-left: 150px;
+    margin-top: 20px;
+    width: 60px;
+    height: 30px;
+    border: none;
+    outline: none;
+    transition: transform 1s; }
+    form #log:active {
+      transform: scale(0.7); }
+  form p {
+    width: 150px;
+    margin-left: 120px; }
+
+/*# sourceMappingURL=iframe.css.map */

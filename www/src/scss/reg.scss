@@ -1,0 +1,151 @@
+*{
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	font-family: youyuan;
+}
+@mixin box_size($width,$height){
+	width: $width;
+	height:$height;
+}
+
+html,body{
+	@include box_size(100%,auto);
+	main{
+		@include box-size(65%,auto);
+		margin: 0 auto;
+		border: 1px solid #999;
+		box-shadow: 6px 6px 4px #000;
+		background-color: #fff;
+		box-sizing: border-box;
+		position: relative;
+		top: 40px;
+		overflow: hidden;
+		ul{
+			position:relative;
+			left: 20%;
+			margin:{
+				top: 80px;
+				bottom: 250px;
+				right:175px;
+			}; 
+			.sex_box label{
+				display: inline-block;
+				width: 35px;
+				height: 35px;
+				box-sizing:border-box;
+			}
+			.validate_out{
+				position: absolute;
+				left: 420px;
+				color:#f00;
+				margin-top: -70px;
+			}
+			.head_pic{
+				p{
+					position: absolute;
+					width: 210px;
+					height: 35px;
+					top: 0;
+					right: 0;
+					background-color: rgb(221, 221, 221);
+					&:hover{}
+					&:active{transform: scale(.9);}
+					label{
+						font-size: 15px;
+						position: absolute;
+						z-index: 5;
+						left: 50%;
+						margin-left: -30px;
+						line-height: 35px;
+					}
+					input{
+						position: relative;
+						opacity: 0;
+					}
+				}
+			}
+			li{
+				font-size: 27px;
+				width: 400px;
+				height: 80px;
+				#man,#woman{
+					float: right;
+					margin-right: 50px;
+				};
+				#man::after{
+					content: "";
+					clear:both;
+					display:block;
+				}
+				position:relative;
+				.redLine{
+					width:210px;
+					height:0px;
+					border:none;
+					border-bottom:1px solid  #f00;
+					position:absolute;
+					top:35px;
+					left:190px;
+				}
+				input{
+					outline: none;
+					width: 200px;
+					height: 30px;
+					float: right;
+					border: none;
+					border-bottom: 1px solid #999;
+					padding-left: 10px;
+					font-size: 18px;
+				}
+			}
+			.reason{
+				p{
+					margin-bottom: 20px;
+				}
+				textarea{
+					width: 100%;
+					height: 200px;
+					resize: none;
+					box-sizing: border-box;
+					font-size: 17px;
+				}
+				width: 400px;
+				height: 250px;
+			}
+			
+			#reg_man,#reg_woman{
+				display: none;
+			}
+			#man{
+				background: url("../images/user_male2.png");
+				background-size:cover;
+			}
+			#woman{
+				background: url("../images/user_female2.png");
+				background-size:cover;
+			}
+			.statement a{
+				text-decoration: none;
+				font-size: 13px;
+			}
+			.reg_btn{
+				margin: 40px 150px;
+				width:100px;
+				height:40px;
+			}
+			.reg_btn input{
+				width: 100px;
+				height: 40px;
+				border:none;
+				outline:none;
+				&:hover{}
+				&:active{
+					transform:scale(.9);
+				}
+			}
+
+		}
+	}
+}
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/fontload.css">
+    <link rel="stylesheet" href="../css/iframe.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../js/jquery.validate.js"></script>    
+    <title>Document</title>
+</head>
+
+<body>
+    
+    <form id="form">
+        <div>
+            <label for="username">用户</label>
+                <input type="text" name="username" id="username">
+                <span class="user_icon"></span>
+        </div>
+        <span></span>
+        <div>
+            <label for="stu_id">学号</label>
+            <input type="text" name="stu_id" id="stu_id">
+            <span class="stu_icon"></span>
+        </div>
+        <span></span>
+        <div class="lastOne">
+            <label for="password">密码</label>
+            <input type="password" name="password" id="password">
+            <span class="pass_icon"></span>
+        </div>
+        <span></span>
+        <br>
+        <input type="submit" id="log" value="登录">
+        <p>
+            <span>还没有账号:</span>
+            <a href="./reg.html" target="_blank">注册</a>
+        </p>
+    </form>
+
+    <script src="../js/validate.js"></script>
+    <script src="../js/login.js"></script>
+</body>
+
+</html>

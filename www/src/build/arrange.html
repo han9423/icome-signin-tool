@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../js/arrange.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <title>计划安排表</title>
+    <style>
+        @font-face {
+            font-family: "youyuan";
+            src: url(../font/font1299/youyuan.ttf);
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: "youyuan";
+            list-style: none;
+            user-select: none;
+        }
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        header {
+            width: 100%;
+            height: 100px;
+            background-color: rgb(37, 185, 154);
+        }
+
+        header section {
+            line-height: 100px;
+            text-align: center;
+        }
+
+        header section h3 {
+            font-size: 40px;
+            color: #fff;
+        }
+
+        .notes {
+            width: 90%;
+            height: 120px;
+            border: 1px solid #ccc;
+            margin: 10px auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: rgb(226, 224, 224);
+            position: relative;
+            transform: s
+        }
+
+        .note .realText {
+            width: 800px;
+            height: 100px;
+            position: absolute;
+            top: 50%;
+            margin: -50px 0 0 20px;
+            font-size: 22px;
+        }
+
+        main .addBtn {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgb(248, 245, 40);
+            right: 40px;
+            bottom: 40px;
+            z-index: 2;
+            transform: rotate(0deg);
+            transition: all .3s;
+        }
+
+        main .addBtn ul li {
+            width: 35px;
+            height: 7px;
+            background-color: #fff;
+            margin-top: 1px;
+            position: relative;
+            border-radius: 8px;
+        }
+
+        main .addBtn ul li:nth-child(1) {
+            transform: rotate(0deg) translate3d(23px, 37px, 0)
+        }
+
+        main .addBtn ul li:nth-child(2) {
+            transform: rotate(90deg) translate3d(29px, -22px, 0);
+        }
+
+        .cover {
+            position: fixed;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: none;
+            background-color: rgba(248, 246, 246, 0.89);
+        }
+
+        .confirmBtn {
+            position: fixed;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: rgb(170, 170, 170);
+            right: 45px;
+            bottom: 45px;
+            z-index: 1;
+            line-height: 70px;
+            text-align: center;
+            font-size: 20px;
+            transition: all .1s;
+        }
+
+        .confirmBtn:hover {
+            background-color: rgb(133, 130, 130);
+        }
+
+        .confirmBtn:active {
+            transform: scale(.8)
+        }
+
+        .content {
+            width: 800px;
+            height: 400px;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            margin: -300px 0 0 -400px;
+        }
+
+        .content p {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        #textarea {
+            margin: 30px 0 0 0;
+            width: 800px;
+            height: 300px;
+            resize: none;
+            position: absolute;
+            outline: none;
+            font-size: 19px;
+            text-indent: 50px;
+        }
+
+        .delete {
+            width: 50px;
+            height: 50px;
+            float: right;
+            margin: 35px 35px 0 0;
+            transition: all .3s;
+        }
+
+        .delete svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        .delete::after {
+            clear: both;
+            content: "";
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <section>
+            <h3>Icome便签</h3>
+        </section>
+    </header>
+    <main>
+        <div class="note"></div>
+        <div class="addBtn">
+            <ul>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </main>
+    <div class="cover"></div>
+    <script>
+
+
+
+
+        var note_num = 0, tempStorageName = 0;
+        var elements = {
+            textContent: "",
+            content: `<div class="content"><p>输入内容</p><textarea cols="200" wrap="hard" id="textarea"></textarea><div>`,
+        }
+
+        let init = function () {
+            for (let prop in localStorage) {
+                tempStorageName = prop;
+                note_num = tempStorageName;
+                if (isNaN(prop)) {
+                    localStorage.removeItem(prop);
+                }
+            }
+        }
+
+        let deleteItem = function () {
+            var deleteNum = $(this).parent().attr("class").match(/\d/g).join("");
+            (function(){
+                $.get("http://localhost:3000/arrange/storage",{deleteStorage:localStorage.getItem(deleteNum)},(data)=>{});
+            }())    
+            localStorage.removeItem(deleteNum);
+            $(this).css({ transform: "scale(0.8)" });
+            setTimeout(() => {
+                $(this).parent().remove();
+            }, 300)
+        }
+
+
+        if (localStorage.length > 0) {
+            init();
+            for (let i in localStorage) {
+                var note = ` <div class="notes n${i}"><div class="realText"></div><div class="delete"><svg width="128px" height="128.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M885.960599 229.332129 139.025868 229.332129c-13.322423 0-24.092721-10.770298-24.092721-24.092721 0-13.302981 10.770298-24.097838 24.092721-24.097838l746.93473 0c13.323447 0 24.092721 10.794857 24.092721 24.097838C910.05332 218.561831 899.284045 229.332129 885.960599 229.332129L885.960599 229.332129zM645.010875 132.956128l-265.036305 0c-13.323447 0-24.097838-10.770298-24.097838-24.097838 0-13.297864 10.774391-24.093744 24.097838-24.093744l265.036305 0c13.328563 0 24.098861 10.796904 24.098861 24.093744C669.109736 122.186853 658.340461 132.956128 645.010875 132.956128L645.010875 132.956128zM404.06729 759.409856 404.06729 349.805968c0-13.301957 10.769274-24.097838 24.092721-24.097838 13.328563 0 24.097838 10.79588 24.097838 24.097838l0 409.603889c0 13.32754-10.769274 24.097838-24.097838 24.097838C414.837588 783.507694 404.06729 772.738419 404.06729 759.409856L404.06729 759.409856zM572.728618 759.409856 572.728618 349.805968c0-13.301957 10.773368-24.097838 24.097838-24.097838 13.323447 0 24.092721 10.79588 24.092721 24.097838l0 409.603889c0 13.32754-10.769274 24.097838-24.092721 24.097838C583.501986 783.507694 572.728618 772.738419 572.728618 759.409856L572.728618 759.409856zM235.406986 301.615409c13.32447 0 24.093744 10.796904 24.093744 24.092721l0 28.528754 0 91.946109 0 385.510144c0 26.600845 21.590737 48.192605 48.190559 48.192605l409.603889 0c26.599821 0 48.190559-21.591761 48.190559-48.192605l0-385.510144 0-91.946109 0-28.528754c0-13.296841 10.769274-24.092721 24.093744-24.092721 13.32754 0 24.097838 10.796904 24.097838 24.092721l0 96.383164 0 24.091698 0 409.609005c0 39.924291-32.361035 72.285327-72.284303 72.285327L283.593452 928.077324c-39.923268 0-72.284303-32.361035-72.284303-72.285327L211.309148 490.398006l0-44.215014 0-24.091698 0-96.383164C211.309148 312.412312 222.083539 301.615409 235.406986 301.615409L235.406986 301.615409zM235.406986 301.615409"></path></svg></div></div>`;
+                $(".note").append(note);
+                $(`.n${i} .realText`).text(localStorage.getItem(i));
+                $(`.notes .delete`).mouseenter(function () {
+                    $(this).click(deleteItem);
+                })
+            }
+        }
+
+
+        $(document).ready(function () {
+            $(".addBtn").click(function () {
+                $(".cover").slideToggle(200, function () {
+                    $(this).append(elements.content);
+
+                    if ($(".addBtn").css("transform") == "matrix(0.707107, 0.707107, -0.707107, 0.707107, 0, 0)") {
+                        $(".addBtn").css({ transform: "rotate(0deg)" });
+                        $(".confirmBtn").animate({
+                            bottom: "45px"
+                        }, 100, () => {
+                            $(".confirmBtn").remove();
+                            $(".content").remove();
+                        })
+                    } else {
+
+                        $(".addBtn").css({ transform: "rotate(45deg)" });
+                        $("body").append("<div class='confirmBtn'>确定<div>")
+                        $(".confirmBtn").animate({
+                            bottom: "150px"
+                        }, 100)
+
+                        $(".confirmBtn").click(function () {
+                            note_num++;
+                            tempStorageName++;
+                            var note = ` <div class="notes n${note_num}"><div class="realText"></div><div class="delete"><svg width="128px" height="128.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M885.960599 229.332129 139.025868 229.332129c-13.322423 0-24.092721-10.770298-24.092721-24.092721 0-13.302981 10.770298-24.097838 24.092721-24.097838l746.93473 0c13.323447 0 24.092721 10.794857 24.092721 24.097838C910.05332 218.561831 899.284045 229.332129 885.960599 229.332129L885.960599 229.332129zM645.010875 132.956128l-265.036305 0c-13.323447 0-24.097838-10.770298-24.097838-24.097838 0-13.297864 10.774391-24.093744 24.097838-24.093744l265.036305 0c13.328563 0 24.098861 10.796904 24.098861 24.093744C669.109736 122.186853 658.340461 132.956128 645.010875 132.956128L645.010875 132.956128zM404.06729 759.409856 404.06729 349.805968c0-13.301957 10.769274-24.097838 24.092721-24.097838 13.328563 0 24.097838 10.79588 24.097838 24.097838l0 409.603889c0 13.32754-10.769274 24.097838-24.097838 24.097838C414.837588 783.507694 404.06729 772.738419 404.06729 759.409856L404.06729 759.409856zM572.728618 759.409856 572.728618 349.805968c0-13.301957 10.773368-24.097838 24.097838-24.097838 13.323447 0 24.092721 10.79588 24.092721 24.097838l0 409.603889c0 13.32754-10.769274 24.097838-24.092721 24.097838C583.501986 783.507694 572.728618 772.738419 572.728618 759.409856L572.728618 759.409856zM235.406986 301.615409c13.32447 0 24.093744 10.796904 24.093744 24.092721l0 28.528754 0 91.946109 0 385.510144c0 26.600845 21.590737 48.192605 48.190559 48.192605l409.603889 0c26.599821 0 48.190559-21.591761 48.190559-48.192605l0-385.510144 0-91.946109 0-28.528754c0-13.296841 10.769274-24.092721 24.093744-24.092721 13.32754 0 24.097838 10.796904 24.097838 24.092721l0 96.383164 0 24.091698 0 409.609005c0 39.924291-32.361035 72.285327-72.284303 72.285327L283.593452 928.077324c-39.923268 0-72.284303-32.361035-72.284303-72.285327L211.309148 490.398006l0-44.215014 0-24.091698 0-96.383164C211.309148 312.412312 222.083539 301.615409 235.406986 301.615409L235.406986 301.615409zM235.406986 301.615409"></path></svg></div></div>`;
+
+                            if (!$("#textarea").val() == "") {
+                                $(".note").append(note);
+                                $(`.n${note_num} .realText`).text($("#textarea").val());
+                                localStorage.setItem(`${tempStorageName}`, $("#textarea").val());
+                                (function(){
+                                    $.get("http://localhost:3000/arrange/storage",{value:$("#textarea").val()},(data)=>{})
+                                }())
+                                $(`.notes .delete`).mouseenter(function () {
+                                    $(this).click(deleteItem);
+                                })
+                            } else {
+                                alert("请输入内容");
+                            }
+                        })
+                    }
+                });
+            })
+        })
+
+    </script>
+</body>
+
+</html>

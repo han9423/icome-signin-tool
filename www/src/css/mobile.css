@@ -1,0 +1,35 @@
+.the_title section h1 #i {
+  position: absolute;
+  left: 30%;
+  animation: i 1.5s ease-out 1; }
+.the_title section h1 #come {
+  position: absolute;
+  right: 30%;
+  animation: come 2s ease-in-out 1; }
+@keyframes i {
+  from {
+    left: 0; }
+  to {
+    left: 30%; } }
+@keyframes come {
+  from {
+    right: 0; }
+  to {
+    right: 30%; } }
+main .wrapper {
+  width: auto;
+  top: 0%;
+  left: 0%;
+  margin: 0px; }
+  main .wrapper ul {
+    width: 250px;
+    float: none;
+    position: absolute;
+    left: 50%;
+    margin-left: -125px; }
+  main .wrapper ul:nth-child(1) {
+    margin-top: 350px; }
+  main .wrapper ul:nth-child(3) {
+    margin-top: 625px; }
+
+/*# sourceMappingURL=mobile.css.map */

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/fontload.css">
+    <link rel="stylesheet" type="text/css" href="../css/reg.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <title>icome注册</title>
+</head>
+
+<body>
+    <main>
+        <form class="reg_container" enctype="multipart/form-data">
+            <ul>
+                <li>
+                    <span>用户</span>
+                    <input type="text" id="reg_username" name="reg_username">
+                </li>
+                <span class="validate_out"></span>
+                <li class="head_pic">
+                    <span>选择头像</span>
+                    <p>
+                        <label for="file">上穿头像</label>
+                        <input type="file" id="file" ,name="file">
+                    </p>
+                </li>
+                <span class="validate_out"></span>
+                <li class="sex_box">
+                    <span>性别</span>
+                    <label for="reg_man" id="man"></label>
+                    <input type="radio" name="reg_sex" id="reg_man">
+                    <label for="reg_woman" id="woman"></label>
+                    <input type="radio" name="reg_sex" id="reg_woman">
+                </li>
+                <li>
+                    <span>密码</span>
+                    <input type="password" name="reg_password" id="reg_password">
+                </li>
+                <span class="validate_out"></span>
+                <li>
+                    <span>学号</span>
+                    <input type="text" name="reg_student" id="reg_student">
+                </li>
+                <span class="validate_out"></span>
+                <li>
+                    <span>QQ/wechat账号</span>
+                    <input type="text" name="reg_qq" id="reg_qq">
+                </li>
+                <span class="validate_out"></span>
+                <li>
+                    <span>手机号</span>
+                    <input type="text" name="reg_moblie" id="reg_moblie">
+                </li>
+                <span class="validate_out"></span>
+                <li class="reason">
+                    <p>留校原因</p>
+                    <textarea name="reg_reason" id="reg_reason" onfocus="(function(e){document.getElementById('reg_reason').innerText = ''}())"
+                        onblur="(function(){var reg_reason = document.getElementById('reg_reason');if(reg_reason.innerText==''){reg_reason.innerText='不少于800字'}}())">不少于800字</textarea>
+                </li>
+                <span class="statement">
+                    <a href="javascript:0;"> 请认真阅读免责声明</a>
+                </span>
+                </br>
+                <div class="reg_btn">
+                    <input type="submit" value="提交" id="reg">
+                </div>
+
+            </ul>
+        </form>
+    </main>
+    <script>
+
+        var formData = new FormData();
+
+        $(".head_pic p #file").change(function () {
+            $(this).siblings("label").text("头像已添加").css("margin-left", "-37.5px"); 
+            formData.append("file", $("#file")[0].files[0]);
+            formData.append("name", $("file").val());
+        })
+
+        $("#reg").click(function (e) {
+            e.preventDefault();
+            formData.set("reg_username",$("#reg_username").val());
+            formData.set("reg_password", $("#reg_password").val());
+            formData.set("sex",(() => { return $("#reg_man").is(":checked") ? "male" : "female" })())
+            formData.set("reg_student",$("#reg_student").val())
+            formData.set("reg_qq",$("#reg_qq").val());
+            formData.set("reg_moblie",$("#reg_moblie").val());
+            formData.set("reg_reason",$("#reg_reason").val());
+            $.ajax({
+                url: "http://localhost:3000/user/reg",
+                dataType: "json",
+                type: "POST",
+                data: formData,
+                contentType : false,
+                processData :false,
+                success: function (data) {
+                    if(data.notice){
+                        alert(data.notice);
+                    }else if(data.done){
+                        alert(data.done);
+                        setTimeout(function(){
+                            location.href = "http://localhost:3000";
+                        },2000);
+                    }
+                }
+            })
+        })
+        
+        $(".sex_box label").click(function () {
+            if (!$(this).siblings("label").is(":checked")) {
+                $(this).css("border", "2px solid #f00");
+                $(this).siblings("label").css("border", "none");
+            }
+        })
+        $("input[type=file]").css("border-bottom", "none");
+        $("li input").click(function () {
+            if ($(this).is($("input[type!=radio]")) && $(this).is("input[type!=submit]") && $(this).is($("input[type!=file]"))) {
+                $(this).parent().append("<div class='redLine'></div>");
+                $(this).parent().siblings("li").children("div").remove();
+            }
+        })
+        $("li input").keydown(function (e) {
+            if (e.keyCode == 9) {
+                $(this).parent().next().next().append("<div class='redLine'></div>");
+                $(this).parent().next().next().siblings("li").children("div").remove();
+            }
+        });
+        $("#reg_qq").click(() => {
+            if ($("#reg_man").is(":checked")) alert("男生请走开！！");
+        })
+    </script>
+    <script src="../js/validate.js"></script>
+</body>
+
+</html>
